@@ -1,0 +1,73 @@
+import { sep, isAbsolute } from 'path';
+
+import type { Rule } from 'eslint';
+
+const ERROR_MESSAGE = 'Please do not use relative path, instead use a path using ts-paths';
+
+function isRelative(filename: string): boolean {
+  return !isAbsolute(filename);
+}
+
+function isUsingTsPaths(filename: string): boolean {
+  return filename.startsWith('@');
+}
+
+function goThroughPrimaryDirectory(dirnames: string[], filename: string) {
+  return dirnames.includes(filename.split(sep).filter((s) => s !== '..')[0]);
+}
+
+export const preferImportWithTsPaths: Rule.RuleModule = {
+  meta: {
+    type: 'suggestion',
+    messages: {
+      default: ERROR_MESSAGE,
+    },
+    fixable: 'code',
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          primaryDirnames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            default: [],
+          },
+        },
+      },
+    ],
+  },
+  create: (context) => {
+    return {
+      ImportDeclaration(node) {
+        if (typeof node.source.value !== 'string') return;
+        if (!isRelative(node.source.value)) return;
+
+        const options = context.options[0] ?? {};
+        const primaryDirnames = options.primaryDirnames;
+        if (!Array.isArray(primaryDirnames) || primaryDirnames.length === 0) return;
+
+        if (
+          !isUsingTsPaths(node.source.value) &&
+          goThroughPrimaryDirectory(primaryDirnames, node.source.value)
+        ) {
+          context.report({
+            node,
+            messageId: 'default',
+            fix: (fixer) => {
+              if (typeof node.source.value !== 'string') return null;
+              if (!Array.isArray(node.source?.range)) return null;
+
+              const fixed = node.source.value.replace(/(\.\.\/)*/, '@');
+              return fixer.replaceTextRange(
+                [node.source.range[0] + 1, node.source.range[1] - 1],
+                fixed,
+              );
+            },
+          });
+        }
+      },
+    };
+  },
+};

@@ -1,0 +1,12 @@
+---
+labels: ['config']
+description: ''
+---
+
+```js
+// tailwind.config.js
+module.exports = {
+  content: ['src/**/*.tsx', 'bit-src/**/*.tsx'],
+  ...require('@sandy2008/monoid.tailwindcss.config').config,
+};
+```
