@@ -1,4 +1,3 @@
-// @ts-expect-error
 import rulesDirPlugin = require('eslint-plugin-rulesdir');
 rulesDirPlugin.RULES_DIR = '.';
 

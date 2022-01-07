@@ -29,7 +29,7 @@
     },
     "eslint/config": {
         "scope": "monoid.utils",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/eslint/config"
     },
