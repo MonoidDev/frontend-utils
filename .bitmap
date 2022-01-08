@@ -11,7 +11,7 @@
 {
     "aspect/react": {
         "scope": "monoid.utils",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/aspect/react"
     },
@@ -23,7 +23,7 @@
     },
     "eslint-rule/prefer-import-with-ts-paths": {
         "scope": "monoid.utils",
-        "version": "0.0.1",
+        "version": "0.0.3",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/eslint-rule/prefer-import-with-ts-paths"
     },
@@ -35,25 +35,25 @@
     },
     "generator/react": {
         "scope": "monoid.utils",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/generator/react"
     },
     "lint-staged/config": {
         "scope": "monoid.utils",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/lint-staged/config"
     },
     "non-runtime-css/zipper-frontend": {
         "scope": "monoid.utils",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/non-runtime-css/zipper-frontend"
     },
     "postcss/config": {
         "scope": "monoid.utils",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/postcss/config"
     },
@@ -65,19 +65,19 @@
     },
     "tailwindcss/config": {
         "scope": "monoid.utils",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/tailwindcss/config"
     },
     "theme/type": {
         "scope": "monoid.utils",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/theme/type"
     },
     "theme/zipper-frontend": {
         "scope": "monoid.utils",
-        "version": "0.0.1",
+        "version": "0.0.2",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/theme/zipper-frontend"
     },

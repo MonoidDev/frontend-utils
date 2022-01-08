@@ -6,7 +6,7 @@ command -V yarn
 
 declare -a dependencies=(
   @monoid/utils.commitlint.config
-  @monoid/utils.eslint-rule.prefer-import-with-ts-paths
+  @monoid/eslint-plugin-prefer-import-with-ts-paths@npm:@monoid/utils.eslint-rule.prefer-import-with-ts-paths
   @monoid/utils.eslint.config
   @monoid/utils.lint-staged.config
   @monoid/utils.postcss.config
