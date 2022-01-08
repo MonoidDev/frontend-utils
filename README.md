@@ -5,6 +5,7 @@ Shared bit component library
 ## Required tools
 
 - `bash@^4`
+- `jq@^jq-1.6`
 
 ## Env
 
