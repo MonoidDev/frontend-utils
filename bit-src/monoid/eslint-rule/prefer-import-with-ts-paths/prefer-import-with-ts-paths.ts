@@ -1,4 +1,4 @@
-import { sep, isAbsolute } from 'path';
+import { isAbsolute, join, dirname } from 'path';
 
 import type { Rule } from 'eslint';
 
@@ -8,12 +8,16 @@ function isRelative(filename: string): boolean {
   return !isAbsolute(filename);
 }
 
+function extractHierarchicalPart(filename: string): string {
+  return dirname(filename).replace(/[^.]*$/, '');
+}
+
 function isUsingTsPaths(filename: string): boolean {
   return filename.startsWith('@');
 }
 
-function goThroughPrimaryDirectory(dirnames: string[], filename: string) {
-  return dirnames.includes(filename.split(sep).filter((s) => s !== '..')[0]);
+function goThroughPrimaryDirectory(baseDir: string, dirnames: string[], filename: string) {
+  return dirnames.some((dirname) => filename.startsWith(join(baseDir, dirname)));
 }
 
 export const preferImportWithTsPaths: Rule.RuleModule = {
@@ -27,6 +31,9 @@ export const preferImportWithTsPaths: Rule.RuleModule = {
       {
         type: 'object',
         properties: {
+          baseDir: {
+            type: 'string',
+          },
           primaryDirnames: {
             type: 'array',
             items: {
@@ -45,12 +52,23 @@ export const preferImportWithTsPaths: Rule.RuleModule = {
         if (!isRelative(node.source.value)) return;
 
         const options = context.options[0] ?? {};
+        const baseDir = options.baseDir;
         const primaryDirnames = options.primaryDirnames;
         if (!Array.isArray(primaryDirnames) || primaryDirnames.length === 0) return;
 
+        const hierarchycalPart = extractHierarchicalPart(node.source.value);
+        // Probably an external module such as react
+        if (hierarchycalPart === '.') return;
+
+        const moduleFilenameFromBaseDir = join(
+          dirname(context.getFilename()),
+          hierarchycalPart,
+          node.source.value.replace(hierarchycalPart, '').slice(1),
+        ).replace(context.getCwd(), '');
+
         if (
           !isUsingTsPaths(node.source.value) &&
-          goThroughPrimaryDirectory(primaryDirnames, node.source.value)
+          goThroughPrimaryDirectory(baseDir, primaryDirnames, moduleFilenameFromBaseDir)
         ) {
           context.report({
             node,
@@ -59,7 +77,7 @@ export const preferImportWithTsPaths: Rule.RuleModule = {
               if (typeof node.source.value !== 'string') return null;
               if (!Array.isArray(node.source?.range)) return null;
 
-              const fixed = node.source.value.replace(/(\.\.\/)*/, '@');
+              const fixed = moduleFilenameFromBaseDir.replace(baseDir, '').replace(/^\/?/, '@');
               return fixer.replaceTextRange(
                 [node.source.range[0] + 1, node.source.range[1] - 1],
                 fixed,

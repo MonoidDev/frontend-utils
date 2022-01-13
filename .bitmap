@@ -23,7 +23,7 @@
     },
     "eslint-rule/prefer-import-with-ts-paths": {
         "scope": "monoid.utils",
-        "version": "0.0.3",
+        "version": "0.1.1",
         "mainFile": "index.ts",
         "rootDir": "bit-src/monoid/eslint-rule/prefer-import-with-ts-paths"
     },
