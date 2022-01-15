@@ -87,6 +87,11 @@ ruleTester.run('prefer-import-with-ts-paths', preferImportWithTsPaths, {
       options,
       code: "import {} from '../common';",
     },
+    {
+      filename: 'src/foo/bar/Foo.tsx',
+      options,
+      code: "import useDebounce from 'react-use/lib/useDebounce'",
+    },
   ],
   invalid: [
     {

@@ -50,6 +50,8 @@ export const preferImportWithTsPaths: Rule.RuleModule = {
       ImportDeclaration(node) {
         if (typeof node.source.value !== 'string') return;
         if (!isRelative(node.source.value)) return;
+        // Probably an external module such as react and react-use/lib/useDebounce
+        if (!/^\.{1,2}\//.test(node.source.value)) return;
 
         const options = context.options[0] ?? {};
         const baseDir = options.baseDir;
@@ -57,9 +59,6 @@ export const preferImportWithTsPaths: Rule.RuleModule = {
         if (!Array.isArray(primaryDirnames) || primaryDirnames.length === 0) return;
 
         const hierarchycalPart = extractHierarchicalPart(node.source.value);
-        // Probably an external module such as react
-        if (hierarchycalPart === '.') return;
-
         const moduleFilenameFromBaseDir = join(
           dirname(context.getFilename()),
           hierarchycalPart,
